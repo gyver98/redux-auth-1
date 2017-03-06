@@ -60,38 +60,77 @@ function receiveLogout() {
 
 // Calls the API to get a token and
 // dispatches actions along the way
+// export function loginUser(creds) {
+  
+//   let config = {
+//     method: 'POST',
+//     headers: { 'Content-Type':'application/x-www-form-urlencoded' },
+//     body: `username=${creds.username}&password=${creds.password}`
+//   }
+  
+//   return dispatch => {
+//     // We dispatch requestLogin to kickoff the call to the API
+//     dispatch(requestLogin(creds))
+//     return fetch('http://localhost:3001/sessions/create', config)
+//       .then(response =>
+//         response.json()
+//         .then(user => ({ user, response }))
+//       ).then(({ user, response }) =>  {
+//         if (!response.ok) {
+//           // If there was a problem, we want to
+//           // dispatch the error condition
+//           dispatch(loginError(user.message))
+//           return Promise.reject(user)
+//         }
+//         else {
+//           // If login was successful, set the token in local storage
+//           localStorage.setItem('id_token', user.id_token)
+          
+//           // Dispatch the success action
+//           dispatch(receiveLogin(user))
+//         }
+//       }).catch(err => console.log("Error: ", err))
+//   }
+// }
+
+
+// Calls the API to get a token and
+// dispatches actions along the way
 export function loginUser(creds) {
   
   let config = {
-    method: 'POST',
-    headers: { 'Content-Type':'application/x-www-form-urlencoded' },
-    body: `username=${creds.username}&password=${creds.password}`
+    method: 'GET'
+    //headers: { 'Content-Type':'application/x-www-form-urlencoded' },
+    //body: `username=${creds.username}&password=${creds.password}`
   }
   
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(creds))
-    return fetch('http://localhost:3001/sessions/create', config)
+    return fetch('https://access-api.corelogic.asia/access/oauth/token?client_id=8dddf18c&client_secret=6fc919ac9fee7f9390a824722e7ef205&grant_type=client_credentials', config)
       .then(response =>
         response.json()
-        .then(user => ({ user, response }))
-      ).then(({ user, response }) =>  {
+        .then(token => ({ token, response }))
+      ).then(({ token, response }) =>  {
         if (!response.ok) {
           // If there was a problem, we want to
           // dispatch the error condition
-          dispatch(loginError(user.message))
-          return Promise.reject(user)
+          dispatch(loginError(token.message))
+          return Promise.reject(token)
         }
         else {
           // If login was successful, set the token in local storage
-          localStorage.setItem('id_token', user.id_token)
+          localStorage.setItem('access_token', token.access_token)
           
           // Dispatch the success action
-          dispatch(receiveLogin(user))
+          dispatch(receiveLogin(token))
         }
       }).catch(err => console.log("Error: ", err))
   }
 }
+
+
+
 
 // Logs the user out
 export function logoutUser() {
