@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 export default class Quotes extends Component {
   
   render() {
-    const { onQuoteClick, onSecretQuoteClick, isAuthenticated, quote, isSecretQuote } = this.props
+    const { onQuoteClick, onSecretQuoteClick, isAuthenticated, accessToken,quote, isSecretQuote } = this.props
     
     return (
       <div>
@@ -22,9 +22,9 @@ export default class Quotes extends Component {
         }
         
         <div className='col-sm-6'>
-          { quote && !isSecretQuote &&
+          { accessToken && !isSecretQuote &&
             <div>
-              <blockquote>{quote}</blockquote>
+              <blockquote>{accessToken}</blockquote>
             </div>
           }
           

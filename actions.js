@@ -60,54 +60,101 @@ function receiveLogout() {
 
 // Calls the API to get a token and
 // dispatches actions along the way
-// export function loginUser(creds) {
-  
-//   let config = {
-//     method: 'POST',
-//     headers: { 'Content-Type':'application/x-www-form-urlencoded' },
-//     body: `username=${creds.username}&password=${creds.password}`
-//   }
-  
-//   return dispatch => {
-//     // We dispatch requestLogin to kickoff the call to the API
-//     dispatch(requestLogin(creds))
-//     return fetch('http://localhost:3001/sessions/create', config)
-//       .then(response =>
-//         response.json()
-//         .then(user => ({ user, response }))
-//       ).then(({ user, response }) =>  {
-//         if (!response.ok) {
-//           // If there was a problem, we want to
-//           // dispatch the error condition
-//           dispatch(loginError(user.message))
-//           return Promise.reject(user)
-//         }
-//         else {
-//           // If login was successful, set the token in local storage
-//           localStorage.setItem('id_token', user.id_token)
-          
-//           // Dispatch the success action
-//           dispatch(receiveLogin(user))
-//         }
-//       }).catch(err => console.log("Error: ", err))
-//   }
-// }
-
-
-// Calls the API to get a token and
-// dispatches actions along the way
 export function loginUser(creds) {
   
   let config = {
-    method: 'GET'
-    //headers: { 'Content-Type':'application/x-www-form-urlencoded' },
-    //body: `username=${creds.username}&password=${creds.password}`
+    method: 'POST',
+    headers: { 'Content-Type':'application/x-www-form-urlencoded' },
+    body: `username=${creds.username}&password=${creds.password}`
   }
   
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(creds))
-    return fetch('https://access-api.corelogic.asia/access/oauth/token?client_id=8dddf18c&client_secret=6fc919ac9fee7f9390a824722e7ef205&grant_type=client_credentials', config)
+    return fetch('http://localhost:3001/sessions/create', config)
+      .then(response =>
+        response.json()
+        .then(user => ({ user, response }))
+      ).then(({ user, response }) =>  {
+        if (!response.ok) {
+          // If there was a problem, we want to
+          // dispatch the error condition
+          dispatch(loginError(user.message))
+          return Promise.reject(user)
+        }
+        else {
+          // If login was successful, set the token in local storage
+          localStorage.setItem('id_token', user.id_token)
+          
+          // Dispatch the success action
+          dispatch(receiveLogin(user))
+        }
+      }).catch(err => console.log("Error: ", err))
+  }
+}
+
+
+// Logs the user out
+export function logoutUser() {
+  return dispatch => {
+    dispatch(requestLogout())
+    localStorage.removeItem('access_token')
+    dispatch(receiveLogout())
+  }
+}
+
+export const TOKEN_REQUEST = 'TOKEN_REQUEST';
+export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
+export const TOKEN_FAILURE = 'TOKEN_FAILURE';
+
+function requestToken(creds) {
+  return {
+    type: TOKEN_REQUEST,
+    isFetching: true,
+    isAuthenticated: false,
+    creds
+  }
+}
+
+function receiveToken(token) {
+  return {
+    type: TOKEN_SUCCESS,
+    isFetching: false,
+    isAuthenticated: true,
+    access_token: token.access_token
+  }
+}
+
+function tokenError(message) {
+  return {
+    type: TOKEN_FAILURE,
+    isFetching: false,
+    isAuthenticated: false,
+    message
+  }
+}
+
+// Calls the API to get a token and
+// dispatches actions along the way
+export function getToken() {
+  debugger;
+  const client_id = '8dddf18c';
+  const client_secret = '6fc919ac9fee7f9390a824722e7ef205';
+  const grant_type = 'client_credentials';
+
+  const config = {
+    method: 'GET'
+    //headers: { 'Content-Type':'application/x-www-form-urlencoded' },
+    //params: `client_id=${client_id}&client_secret=${client_secret}&grant_type=${grant_type}`
+  }
+  const params = `client_id=${client_id}&client_secret=${client_secret}&grant_type=${grant_type}`;
+  
+  return dispatch => {
+    // We dispatch requestToken to kickoff the call to the API
+    dispatch(requestToken())
+    //debugger;
+    return fetch('https://access-api.corelogic.asia/access/oauth/token?'+ params, config)
+    //return fetch('https://access-api.corelogic.asia/access/oauth/token?client_id=8dddf18c&client_secret=6fc919ac9fee7f9390a824722e7ef205&grant_type=client_credentials', config)
       .then(response =>
         response.json()
         .then(token => ({ token, response }))
@@ -115,29 +162,17 @@ export function loginUser(creds) {
         if (!response.ok) {
           // If there was a problem, we want to
           // dispatch the error condition
-          dispatch(loginError(token.message))
+          dispatch(tokenError(token.message))
           return Promise.reject(token)
         }
         else {
-          // If login was successful, set the token in local storage
+          // If getToken was successful, set the token in local storage
           localStorage.setItem('access_token', token.access_token)
           
           // Dispatch the success action
-          dispatch(receiveLogin(token))
+          dispatch(receiveToken(token))
         }
       }).catch(err => console.log("Error: ", err))
-  }
-}
-
-
-
-
-// Logs the user out
-export function logoutUser() {
-  return dispatch => {
-    dispatch(requestLogout())
-    localStorage.removeItem('id_token')
-    dispatch(receiveLogout())
   }
 }
 

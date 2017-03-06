@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loginUser, fetchQuote, fetchSecretQuote } from '../actions'
+import { loginUser, getToken, fetchQuote, fetchSecretQuote } from '../actions'
 import Login from '../components/Login'
 import Navbar from '../components/Navbar'
 import Quotes from '../components/Quotes'
@@ -18,7 +18,7 @@ class App extends Component {
         />
         <div className='container'>
           <Quotes
-            onQuoteClick={() => dispatch(fetchQuote())}
+            onQuoteClick={() => dispatch(getToken())}
             onSecretQuoteClick={() => dispatch(fetchSecretQuote())}
             isAuthenticated={isAuthenticated}
             quote={quote}
@@ -40,12 +40,12 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   
-  const { quotes, auth } = state
-  const { quote, authenticated } = quotes
+  const { token, auth } = state
+  const { accessToken, authenticated } = token
   const { isAuthenticated, errorMessage } = auth
   
   return {
-    quote,
+    token,
     isSecretQuote: authenticated,
     isAuthenticated,
     errorMessage
