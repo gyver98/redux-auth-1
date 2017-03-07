@@ -4,6 +4,7 @@ import { loginUser, getToken, fetchQuote, fetchSecretQuote } from '../actions'
 import Login from '../components/Login'
 import Navbar from '../components/Navbar'
 import Quotes from '../components/Quotes'
+import PropertyDetails from '../containers/PropertyDetails'
 
 class App extends Component {
   
@@ -17,9 +18,10 @@ class App extends Component {
           dispatch={dispatch}
         />
         <div className='container'>
-          <Quotes
-            onQuoteClick={() => dispatch(getToken())}
+          <PropertyDetails
+            onTokenClick={() => dispatch(getToken())}
             onSecretQuoteClick={() => dispatch(fetchSecretQuote())}
+            onPropertyTimelineClick={() => dispatch(fetchPropertyTimeline())}
             isAuthenticated={isAuthenticated}
             accessToken={accessToken}
             isSecretQuote={isSecretQuote}

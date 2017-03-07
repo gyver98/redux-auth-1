@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:3001/api/'
 
 function callApi(endpoint, authenticated) {
-  
+  debugger;
   let token = localStorage.getItem('id_token') || null
   let config = {}
   
@@ -31,7 +31,7 @@ function callApi(endpoint, authenticated) {
 export const CALL_API = Symbol('Call API')
 
 export default store => next => action => {
-  
+  debugger;
   const callAPI = action[CALL_API]
   
   // So the middleware doesn't get applied to every single action
