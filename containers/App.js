@@ -8,7 +8,7 @@ import Quotes from '../components/Quotes'
 class App extends Component {
   
   render() {
-    const { dispatch, quote, isAuthenticated, errorMessage, isSecretQuote } = this.props
+    const { dispatch, accessToken, isAuthenticated, errorMessage, isSecretQuote } = this.props
     return (
       <div>
         <Navbar
@@ -21,7 +21,7 @@ class App extends Component {
             onQuoteClick={() => dispatch(getToken())}
             onSecretQuoteClick={() => dispatch(fetchSecretQuote())}
             isAuthenticated={isAuthenticated}
-            quote={quote}
+            accessToken={accessToken}
             isSecretQuote={isSecretQuote}
           />
         </div>
@@ -45,7 +45,7 @@ function mapStateToProps(state) {
   const { isAuthenticated, errorMessage } = auth
   
   return {
-    token,
+    accessToken,
     isSecretQuote: authenticated,
     isAuthenticated,
     errorMessage

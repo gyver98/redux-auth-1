@@ -137,7 +137,7 @@ function tokenError(message) {
 // Calls the API to get a token and
 // dispatches actions along the way
 export function getToken() {
-  debugger;
+  //debugger;
   const client_id = '8dddf18c';
   const client_secret = '6fc919ac9fee7f9390a824722e7ef205';
   const grant_type = 'client_credentials';

@@ -9,20 +9,20 @@ export default class Quotes extends Component {
       <div>
         <div className='col-sm-3'>
           <button onClick={onQuoteClick} className="btn btn-primary">
-            Get Quotes
+            Get Token
           </button>
         </div>
         
         { isAuthenticated &&
           <div className='col-sm-3'>
             <button onClick={onSecretQuoteClick} className="btn btn-warning">
-              Get Secret Quote
+              Get Property Timeline
             </button>
           </div>
         }
         
         <div className='col-sm-6'>
-          { accessToken && !isSecretQuote &&
+          { accessToken &&
             <div>
               <blockquote>{accessToken}</blockquote>
             </div>
