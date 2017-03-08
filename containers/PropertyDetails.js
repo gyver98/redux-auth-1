@@ -3,27 +3,29 @@ import React, { Component, PropTypes } from 'react'
 export default class PropertyDetails extends Component {
   
   render() {
-    const { onTokenClick,onPropertyTimelineClick, onQuoteClick, onSecretQuoteClick, isAuthenticated, accessToken, timeline, quote, isSecretQuote } = this.props;
+    const { onTokenClick,onPropertyTimelineClick, isAuthenticated, accessToken, timeline} = this.props;
     //debugger;
     //const TimelineItems = Object.keys(timeline).length === 0 ? <li>{}</li> : timeline.propertyEventList.map(property => <li>{property.detail.agency}</li>);
     
     return (
       <div>
-        <div className='col-sm-3'>
+      <div>
+        <div className='col-sm-6'>
           <button onClick={onTokenClick} className="btn btn-primary">
             Get Token
           </button>
         </div>
         
         { isAuthenticated &&
-          <div className='col-sm-3'>
+          <div className='col-sm-6'>
             <button onClick={onPropertyTimelineClick} className="btn btn-warning">
               Get Property Timeline
             </button>
           </div>
         }
-        
-        <div className='col-sm-6'>
+        </div>
+        <div className='col-sm-12'>
+          <h1>Property History</h1>
           { accessToken &&
             <div>
               <blockquote>{accessToken}</blockquote>
@@ -34,7 +36,7 @@ export default class PropertyDetails extends Component {
             <div>
               <ul>
                 {timeline.propertyEventList.map(property => 
-                  <li>
+                  <li key={property.date}>
                     <span>{property.date}</span>/{property.detail.agency}/{property.type}
                   </li>
                 )}    
@@ -48,9 +50,9 @@ export default class PropertyDetails extends Component {
 }
 
 PropertyDetails.propTypes = {
-  onQuoteClick: PropTypes.func.isRequired,
-  onSecretQuoteClick: PropTypes.func.isRequired,
+  onTokenClick: PropTypes.func.isRequired,
+  onPropertyTimelineClick: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  quote: PropTypes.string,
-  isSecretQuote: PropTypes.bool.isRequired
+  accessToken: PropTypes.string,
+  timeline: PropTypes.object
  }

@@ -162,10 +162,12 @@ export function getToken() {
         if (!response.ok) {
           // If there was a problem, we want to
           // dispatch the error condition
+          
           dispatch(tokenError(token.message))
           return Promise.reject(token)
         }
         else {
+          debugger;
           // If getToken was successful, set the token in local storage
           localStorage.setItem('access_token', token.access_token)
           
