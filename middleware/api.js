@@ -1,8 +1,10 @@
-const BASE_URL = 'http://localhost:3001/api/'
+//const BASE_URL = 'http://localhost:3001/api/'
+const BASE_URL = 'https://property-sandbox-api.corelogic.asia/bsg-au/'
 
 function callApi(endpoint, authenticated) {
-  debugger;
-  let token = localStorage.getItem('id_token') || null
+  //debugger;
+  //let token = localStorage.getItem('id_token') || null
+  let token = localStorage.getItem('access_token') || null
   let config = {}
   
   if(authenticated) {
@@ -17,21 +19,21 @@ function callApi(endpoint, authenticated) {
   
   return fetch(BASE_URL + endpoint, config)
     .then(response =>
-      response.text()
-      .then(text => ({ text, response }))
-    ).then(({ text, response }) => {
+      response.json()
+      .then(detail => ({ detail, response }))
+    ).then(({ detail, response }) => {
       if (!response.ok) {
-        return Promise.reject(text)
+        return Promise.reject(detail)
       }
-      
-      return text
+      debugger;
+      return detail
     }).catch(err => console.log(err))
 }
 
 export const CALL_API = Symbol('Call API')
 
 export default store => next => action => {
-  debugger;
+  //debugger;
   const callAPI = action[CALL_API]
   
   // So the middleware doesn't get applied to every single action

@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { 
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
   TOKEN_REQUEST, TOKEN_SUCCESS, TOKEN_FAILURE,
+  PROPERTY_TIMELINE_REQUEST, PROPERTY_TIMELINE_SUCCESS, PROPERTY_TIMELINE_FAILURE,
   QUOTE_REQUEST, QUOTE_SUCCESS, QUOTE_FAILURE
 } from './actions'
 
@@ -67,6 +68,32 @@ function token(state = {
   }
 }
 
+// The token reducer
+function propertyTimeline(state = {
+    isFetching: false,
+    timeline: {},
+    authenticated: false
+  }, action) {
+  switch (action.type) {
+    case PROPERTY_TIMELINE_REQUEST:
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    case PROPERTY_TIMELINE_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        timeline: action.response,
+        authenticated: action.authenticated || false
+      })
+    case PROPERTY_TIMELINE_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false
+      })
+    default:
+      return state
+  }
+}
+
 // The quotes reducer
 // function quotes(state = {
 //     isFetching: false,
@@ -97,7 +124,8 @@ function token(state = {
 // can be left split apart above
 const quotesApp = combineReducers({
   auth,
-  token
+  token,
+  propertyTimeline
 })
 
 export default quotesApp

@@ -176,6 +176,22 @@ export function getToken() {
   }
 }
 
+export const PROPERTY_TIMELINE_REQUEST = 'PROPERTY_TIMELINE_REQUEST'
+export const PROPERTY_TIMELINE_SUCCESS = 'PROPERTY_TIMELINE_SUCCESS'
+export const PROPERTY_TIMELINE_FAILURE = 'PROPERTY_TIMELINE_FAILURE'
+
+// Uses the API middleware to get a property timeline data
+export function fetchPropertyTimeline() {
+  //debugger;
+  return {
+    [CALL_API]: {
+      endpoint: 'property/17578126/timeline',
+      authenticated: true,
+      types: [PROPERTY_TIMELINE_REQUEST, PROPERTY_TIMELINE_SUCCESS, PROPERTY_TIMELINE_FAILURE]
+    }
+  }
+}
+
 export const QUOTE_REQUEST = 'QUOTE_REQUEST'
 export const QUOTE_SUCCESS = 'QUOTE_SUCCESS'
 export const QUOTE_FAILURE = 'QUOTE_FAILURE'

@@ -3,7 +3,9 @@ import React, { Component, PropTypes } from 'react'
 export default class PropertyDetails extends Component {
   
   render() {
-    const { onTokenClick,onPropertyTimelineClick, onQuoteClick, onSecretQuoteClick, isAuthenticated, accessToken,quote, isSecretQuote } = this.props
+    const { onTokenClick,onPropertyTimelineClick, onQuoteClick, onSecretQuoteClick, isAuthenticated, accessToken, timeline, quote, isSecretQuote } = this.props;
+    //debugger;
+    //const TimelineItems = Object.keys(timeline).length === 0 ? <li>{}</li> : timeline.propertyEventList.map(property => <li>{property.detail.agency}</li>);
     
     return (
       <div>
@@ -28,13 +30,11 @@ export default class PropertyDetails extends Component {
             </div>
           }
           
-          { quote && isAuthenticated && isSecretQuote &&
+          { isAuthenticated &&
             <div>
-              <span className="label label-danger">Secret Quote</span>
-              <hr/>
-              <blockquote>
-                {quote}
-              </blockquote>
+              <ul>
+                {console.log(timeline)}    
+              </ul>
             </div>
           }
         </div>
