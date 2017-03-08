@@ -30,10 +30,14 @@ export default class PropertyDetails extends Component {
             </div>
           }
           
-          { isAuthenticated &&
+          { isAuthenticated && Object.keys(timeline).length !== 0 &&
             <div>
               <ul>
-                {console.log(timeline)}    
+                {timeline.propertyEventList.map(property => 
+                  <li>
+                    <span>{property.date}</span>/{property.detail.agency}/{property.type}
+                  </li>
+                )}    
               </ul>
             </div>
           }

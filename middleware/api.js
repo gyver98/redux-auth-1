@@ -25,7 +25,7 @@ function callApi(endpoint, authenticated) {
       if (!response.ok) {
         return Promise.reject(detail)
       }
-      debugger;
+      //debugger;
       return detail
     }).catch(err => console.log(err))
 }
