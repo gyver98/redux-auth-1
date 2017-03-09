@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loginUser, getToken, fetchPropertyTimeline, fetchQuote, fetchSecretQuote } from '../actions'
+import { loginUser, getToken, fetchPropertyTimeline, fetchPropertyDetail } from '../actions'
 import Login from '../components/Login'
 import Navbar from '../components/Navbar'
 import Quotes from '../components/Quotes'
@@ -9,7 +9,7 @@ import PropertyDetails from '../containers/PropertyDetails'
 class App extends Component {
   
   render() {
-    const { dispatch, accessToken, timeline, isAuthenticated, errorMessage, isSecretQuote } = this.props
+    const { dispatch, accessToken, timeline, propertyDetailInfo, isAuthenticated, errorMessage, isSecretQuote } = this.props
     return (
       <div>
         <Navbar
@@ -22,9 +22,11 @@ class App extends Component {
             onTokenClick={() => dispatch(getToken())}
             onSecretQuoteClick={() => dispatch(fetchSecretQuote())}
             onPropertyTimelineClick={() => dispatch(fetchPropertyTimeline())}
+            onPropertyDetailClick={() => dispatch(fetchPropertyDetail())}
             isAuthenticated={isAuthenticated}
             accessToken={accessToken}
             timeline={timeline}
+            propertyDetailInfo={propertyDetailInfo}
             isSecretQuote={isSecretQuote}
           />
         </div>
@@ -43,14 +45,16 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   
-  const { token, auth, propertyTimeline } = state;
+  const { token, auth, propertyTimeline, propertyDetail } = state;
   const { accessToken, authenticated } = token;
   const { isAuthenticated, errorMessage } = auth;
   const { timeline } = propertyTimeline;
-  //debugger;
+  const { propertyDetailInfo } = propertyDetail;
+  debugger;
   return {
     accessToken,
     timeline,
+    propertyDetailInfo,
     isAuthenticated,
     errorMessage
   }

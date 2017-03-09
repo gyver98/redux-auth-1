@@ -194,6 +194,22 @@ export function fetchPropertyTimeline() {
   }
 }
 
+export const PROPERTY_DETAIL_REQUEST = 'PROPERTY_DETAIL_REQUEST';
+export const PROPERTY_DETAIL_SUCCESS = 'PROPERTY_DETAIL_SUCCESS';
+export const PROPERTY_DETAIL_FAILURE = 'PROPERTY_DETAIL_FAILURE';
+
+// Uses the API middleware to get a property timeline data
+export function fetchPropertyDetail() {
+  //debugger;
+  return {
+    [CALL_API]: {
+      endpoint: 'v1/property/9639276.json?returnFields=address,attributes,forRentPropertyCampaignList,forSaleAgencyCampaignList,forSalePropertyCampaignList,propertyPhotoList',
+      authenticated: true,
+      types: [PROPERTY_DETAIL_REQUEST, PROPERTY_DETAIL_SUCCESS, PROPERTY_DETAIL_FAILURE]
+    }
+  }
+}
+
 export const QUOTE_REQUEST = 'QUOTE_REQUEST'
 export const QUOTE_SUCCESS = 'QUOTE_SUCCESS'
 export const QUOTE_FAILURE = 'QUOTE_FAILURE'

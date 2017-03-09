@@ -3,6 +3,7 @@ import {
   LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS,
   TOKEN_REQUEST, TOKEN_SUCCESS, TOKEN_FAILURE,
   PROPERTY_TIMELINE_REQUEST, PROPERTY_TIMELINE_SUCCESS, PROPERTY_TIMELINE_FAILURE,
+  PROPERTY_DETAIL_REQUEST, PROPERTY_DETAIL_SUCCESS, PROPERTY_DETAIL_FAILURE,
   QUOTE_REQUEST, QUOTE_SUCCESS, QUOTE_FAILURE
 } from './actions'
 
@@ -68,7 +69,7 @@ function token(state = {
   }
 }
 
-// The token reducer
+// The property timeline reducer
 function propertyTimeline(state = {
     isFetching: false,
     timeline: {},
@@ -94,6 +95,31 @@ function propertyTimeline(state = {
   }
 }
 
+// The property detail reducer
+function propertyDetail(state = {
+    isFetching: false,
+    propertyDetailInfo: {},
+    authenticated: false
+  }, action) {
+  switch (action.type) {
+    case PROPERTY_DETAIL_REQUEST:
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    case PROPERTY_DETAIL_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        propertyDetailInfo: action.response,
+        authenticated: action.authenticated || false
+      })
+    case PROPERTY_DETAIL_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false
+      })
+    default:
+      return state
+  }
+}
 // The quotes reducer
 // function quotes(state = {
 //     isFetching: false,
@@ -125,7 +151,8 @@ function propertyTimeline(state = {
 const quotesApp = combineReducers({
   auth,
   token,
-  propertyTimeline
+  propertyTimeline,
+  propertyDetail
 })
 
 export default quotesApp
