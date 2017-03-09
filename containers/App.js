@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loginUser, getToken, fetchPropertyTimeline, fetchPropertyDetail } from '../actions'
+import { loginUser, getToken, fetchPropertyTimeline, fetchPropertyDetail, fetchRadiusListed } from '../actions'
 import Login from '../components/Login'
 import Navbar from '../components/Navbar'
 import Quotes from '../components/Quotes'
@@ -23,6 +23,7 @@ class App extends Component {
             onSecretQuoteClick={() => dispatch(fetchSecretQuote())}
             onPropertyTimelineClick={() => dispatch(fetchPropertyTimeline())}
             onPropertyDetailClick={() => dispatch(fetchPropertyDetail())}
+            onRadiusListedClick={() => dispatch(fetchRadiusListed())}
             isAuthenticated={isAuthenticated}
             accessToken={accessToken}
             timeline={timeline}
@@ -45,16 +46,18 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   
-  const { token, auth, propertyTimeline, propertyDetail } = state;
+  const { token, auth, propertyTimeline, propertyDetail,radiusListed } = state;
   const { accessToken, authenticated } = token;
   const { isAuthenticated, errorMessage } = auth;
   const { timeline } = propertyTimeline;
   const { propertyDetailInfo } = propertyDetail;
-  debugger;
+  //const { propertyDetailInfo } = radiusListed;
+  //debugger;
   return {
     accessToken,
     timeline,
     propertyDetailInfo,
+    radiusListed,
     isAuthenticated,
     errorMessage
   }

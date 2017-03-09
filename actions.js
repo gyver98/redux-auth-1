@@ -134,6 +134,15 @@ function tokenError(message) {
   }
 }
 
+function checkValidToken() {
+  const token = localStorage.getItem('access_token') || null;
+  let hasValidToken = false;
+  if (token !== null) {
+    hasValidToken = true;
+  }
+  return hasValidToken;
+}
+
 // Calls the API to get a token and
 // dispatches actions along the way
 export function getToken() {
@@ -143,14 +152,20 @@ export function getToken() {
   const grant_type = 'client_credentials';
 
   const config = {
-    method: 'GET'
+    method: 'GET',
     //headers: { 'Content-Type':'application/x-www-form-urlencoded' },
+    headers: { "Access-Control-Allow-Headers": "Origin,X-Requested-With, Content-Type, Accept" },
+   
     //params: `client_id=${client_id}&client_secret=${client_secret}&grant_type=${grant_type}`
   }
   const params = `client_id=${client_id}&client_secret=${client_secret}&grant_type=${grant_type}`;
-  
+  const hasValidToken = checkValidToken();
+
   return dispatch => {
-    // We dispatch requestToken to kickoff the call to the API
+    // if there is not a valid token then dispatch requestToken
+    //debugger;
+    if (!hasValidToken) {
+    // We dispatch requestToken to kickoff the call to the API  
     dispatch(requestToken())
     //debugger;
     return fetch('https://access-api.corelogic.asia/access/oauth/token?'+ params, config)
@@ -167,14 +182,20 @@ export function getToken() {
           return Promise.reject(token)
         }
         else {
-          debugger;
+          //debugger;
           // If getToken was successful, set the token in local storage
           localStorage.setItem('access_token', token.access_token)
           
           // Dispatch the success action
-          dispatch(receiveToken(token))
+          dispatch(receiveToken(token));
+          dispatch(fetchPropertyDetail());
+          dispatch(fetchPropertyTimeline());
         }
       }).catch(err => console.log("Error: ", err))
+    } else {
+      dispatch(fetchPropertyDetail());
+      dispatch(fetchPropertyTimeline());  
+    }
   }
 }
 
@@ -198,7 +219,7 @@ export const PROPERTY_DETAIL_REQUEST = 'PROPERTY_DETAIL_REQUEST';
 export const PROPERTY_DETAIL_SUCCESS = 'PROPERTY_DETAIL_SUCCESS';
 export const PROPERTY_DETAIL_FAILURE = 'PROPERTY_DETAIL_FAILURE';
 
-// Uses the API middleware to get a property timeline data
+// Uses the API middleware to get a property detail data
 export function fetchPropertyDetail() {
   //debugger;
   return {
@@ -206,6 +227,23 @@ export function fetchPropertyDetail() {
       endpoint: 'v1/property/9639276.json?returnFields=address,attributes,forRentPropertyCampaignList,forSaleAgencyCampaignList,forSalePropertyCampaignList,propertyPhotoList',
       authenticated: true,
       types: [PROPERTY_DETAIL_REQUEST, PROPERTY_DETAIL_SUCCESS, PROPERTY_DETAIL_FAILURE]
+    }
+  }
+}
+
+export const RADIUS_LISTED_REQUEST = 'RADIUS_LISTED_REQUEST';
+export const RADIUS_LISTED_SUCCESS = 'RADIUS_LISTED_SUCCESS';
+export const RADIUS_LISTED_FAILURE = 'RADIUS_LISTED_FAILURE';
+
+// Uses the API middleware to get a property timeline data
+export function fetchRadiusListed() {
+  //debugger;
+  return {
+    [CALL_API]: {
+      endpoint: 'au/property/geo/radius?baths=1&beds=2&carSpaces=1&landArea=56&pTypes=Unit&lat=-34.94326763&lon=138.64231425&radius=5',
+      authenticated: true,
+      apiType: 'SEARCH',
+      types: [RADIUS_LISTED_REQUEST, RADIUS_LISTED_SUCCESS, RADIUS_LISTED_FAILURE]
     }
   }
 }

@@ -9,7 +9,7 @@ import api from './middleware/api'
 
 let createStoreWithMiddleware = applyMiddleware(thunkMiddleware, api)(createStore)
 
-let store = createStoreWithMiddleware(quotesApp)
+let store = createStoreWithMiddleware(quotesApp,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 let rootElement = document.getElementById('root')
 

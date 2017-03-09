@@ -4,7 +4,7 @@ import {
   TOKEN_REQUEST, TOKEN_SUCCESS, TOKEN_FAILURE,
   PROPERTY_TIMELINE_REQUEST, PROPERTY_TIMELINE_SUCCESS, PROPERTY_TIMELINE_FAILURE,
   PROPERTY_DETAIL_REQUEST, PROPERTY_DETAIL_SUCCESS, PROPERTY_DETAIL_FAILURE,
-  QUOTE_REQUEST, QUOTE_SUCCESS, QUOTE_FAILURE
+  RADIUS_LISTED_REQUEST, RADIUS_LISTED_SUCCESS, RADIUS_LISTED_FAILURE
 } from './actions'
 
 // The auth reducer. The starting state sets authentication
@@ -120,6 +120,32 @@ function propertyDetail(state = {
       return state
   }
 }
+
+// The radius listed reducer
+function radiusListed(state = {
+    isFetching: false,
+    radiusListed: {},
+    authenticated: false
+  }, action) {
+  switch (action.type) {
+    case RADIUS_LISTED_REQUEST:
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    case RADIUS_LISTED_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        radiusListed: action.response,
+        authenticated: action.authenticated || false
+      })
+    case RADIUS_LISTED_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false
+      })
+    default:
+      return state
+  }
+}
 // The quotes reducer
 // function quotes(state = {
 //     isFetching: false,
@@ -152,7 +178,8 @@ const quotesApp = combineReducers({
   auth,
   token,
   propertyTimeline,
-  propertyDetail
+  propertyDetail,
+  radiusListed
 })
 
 export default quotesApp

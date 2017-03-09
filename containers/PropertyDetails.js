@@ -2,15 +2,28 @@ import React, { Component, PropTypes } from 'react'
 
 export default class PropertyDetails extends Component {
   
+  componentDidMount() { 
+    this.props.onTokenClick();  
+  }
+
   render() {
-    const { onPropertyDetailClick, onTokenClick, onPropertyTimelineClick, isAuthenticated, accessToken, timeline, propertyDetailInfo} = this.props;
+    const { 
+      onRadiusListedClick, 
+      onPropertyDetailClick, 
+      onTokenClick, 
+      onPropertyTimelineClick, 
+      isAuthenticated, 
+      accessToken, 
+      timeline, 
+      propertyDetailInfo,
+      radiusListed } = this.props;
     //debugger;
     //const TimelineItems = Object.keys(timeline).length === 0 ? <li>{}</li> : timeline.propertyEventList.map(property => <li>{property.detail.agency}</li>);
     
     return (
       <div>
       <div>
-        <div className='col-sm-4'>
+        <div className='col-sm-3'>
           <button onClick={onTokenClick} className="btn btn-primary">
             Get Token
           </button>
@@ -18,14 +31,19 @@ export default class PropertyDetails extends Component {
         
         { isAuthenticated &&
         <div>
-          <div className='col-sm-4'>
+          <div className='col-sm-3'>
             <button onClick={onPropertyTimelineClick} className="btn btn-warning">
               Get Property Timeline
             </button>
           </div>
-          <div className='col-sm-4'>
+          <div className='col-sm-3'>
             <button onClick={onPropertyDetailClick} className="btn btn-warning">
               Get Property Detail
+            </button>
+          </div>
+          <div className='col-sm-3'>
+            <button onClick={onRadiusListedClick} className="btn btn-warning">
+              Get Radius Listed
             </button>
           </div>
         </div>
@@ -39,7 +57,23 @@ export default class PropertyDetails extends Component {
             </div>
           }
           
-          { isAuthenticated && Object.keys(timeline).length !== 0 &&
+          { accessToken && Object.keys(propertyDetailInfo).length !== 0 &&
+            
+            <div>
+              <h1>Property Detail</h1>
+              <ul>
+                 {console.log("propertyDetailInfo",propertyDetailInfo.property)}
+                  <li>
+                    <span>{propertyDetailInfo.property.address.singleLine}</span>/{propertyDetailInfo.property.propertyType}
+                  </li>
+                  {propertyDetailInfo.property.propertyPhotoList.map(photo => 
+                    <img src={photo.thumbnailPhotoUrl}/>
+                  )} 
+              </ul>
+            </div>
+          }
+
+          { accessToken && Object.keys(timeline).length !== 0 &&
             
             <div>
               <h1>Property History</h1>
@@ -53,15 +87,15 @@ export default class PropertyDetails extends Component {
             </div>
           }
 
-          { isAuthenticated && Object.keys(propertyDetailInfo).length !== 0 &&
+          
+
+          { isAuthenticated && 
             
             <div>
-              <h1>Property Detail</h1>
+              <h1>Similar Properties Listed</h1>
               <ul>
-                 {console.log("propertyDetailInfo",propertyDetailInfo.property)}
-                  <li>
-                    <span>{propertyDetailInfo.property.address.singleLine}</span>/{propertyDetailInfo.property.propertyType}
-                  </li>
+                 {console.log("radiusListed",radiusListed)}
+                  
                    
               </ul>
             </div>
